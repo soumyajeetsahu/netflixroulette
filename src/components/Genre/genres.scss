@@ -1,0 +1,29 @@
+.genres {
+  color: #fff;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-transform: uppercase;
+  text-align: left;
+  margin-left: 2em;
+  padding-bottom: 1em;
+}
+
+.genre-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: 2em;
+}
+
+.genres-line {
+  display: flex;
+  text-align: left;
+  padding-top: 1em;
+}
+
+.genres.active {
+  border-bottom: 2px solid #ff5733;
+}
