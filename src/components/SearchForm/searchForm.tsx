@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import "./searchForm.scss";
 
-const SearchForm: React.FC = (props) => {
-  const [searchTerm, setSearchTerm] = useState('');
+interface SearchFormProps {
+  initialQuery?: string;
+  onSearch: (query: string) => void;
+}
+
+const SearchForm: React.FC<SearchFormProps> = (props) => {
+  const [searchTerm, setSearchTerm] = useState(props.initialQuery || "");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('Search term:', searchTerm);
+    props.onSearch(searchTerm);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,7 +20,7 @@ const SearchForm: React.FC = (props) => {
 
   return (
     <div className="search-form">
-      <form onSubmit={handleSubmit}>
+      <form className="searchForm" onSubmit={handleSubmit}>
         <div className="search">
           <input type="text" className="search-input" placeholder="What do you want to watch?" value={searchTerm} onChange={handleChange} />
           <button className="search-button" type="submit">Search</button>

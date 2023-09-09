@@ -1,17 +1,23 @@
-import React from 'react'
-import './header.scss'
-import SearchForm from '../../SearchForm/searchForm'
+import React from 'react';
+import './header.scss';
+import SearchForm from '../../SearchForm/searchForm';
 
-const header: React.FC = () => {
-    return (
-        <div className="header-div">
-            <div className='page-title'>netflixroulette</div>
-            <div className='addButton-div'><button className='add-button'>+ add movie</button></div>
-           
-            <div className='page-label'>FIND YOUR MOVIE</div>
-            <SearchForm />
-        </div>
-    )
-}
+const Header: React.FC = () => {
+  const handleSearch = (query: string) => {
+    console.log('Search value:', query);
+  };
 
-export default header
+  return (
+    <div className="header-div">
+      <div className="page-title">netflixroulette</div>
+      <div className="addButton-div">
+        <button className="add-button">+ add movie</button>
+      </div>
+
+      <div className="page-label">FIND YOUR MOVIE</div>
+      <SearchForm initialQuery="Test" onSearch={handleSearch} />
+    </div>
+  );
+};
+
+export default Header;

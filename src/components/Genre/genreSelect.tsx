@@ -1,23 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { Genres } from './genres';
 import './genres.scss';
 
-const GenreSelect: React.FC = () => {
-  const [genres, setGenres] = useState<{ id: number; name: string }[]>([]);
-  const [activeGenre, setActiveGenre] = useState<string | null>('ALL');
+interface Genre {
+  id: number;
+  name: string;
+}
+
+interface GenreSelectProps {
+  genres: Genre[];
+  selectedGenre: string;
+  onSelect: (genreName: string) => void;
+}
+
+const GenreSelect: React.FC<GenreSelectProps> = (props) => {
+  const [activeGenre, setActiveGenre] = useState<string | null>(props.selectedGenre);
 
   useEffect(() => {
-    setGenres(Genres);
+    
   }, []);
 
   const handleGenreClick = (genreName: string) => {
     setActiveGenre(genreName);
+    props.onSelect(genreName);
   };
 
   return (
     <div className="genre-container">
       <div className="genres-line">
-        {genres.map((genre) => (
+        {props.genres.map((genre) => (
           <a
             key={genre.id}
             className={`genres ${genre.name === activeGenre ? 'active' : ''}`}
