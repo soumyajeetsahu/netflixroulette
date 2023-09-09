@@ -36,7 +36,7 @@ class Counter extends React.Component<CounterProps, CounterState> {
       flexDirection: "column",
       alignItems: "center",
       margin: "20px",
-      padding: "10px",
+      padding: "5px",
       border: "1px solid #ccc",
       borderRadius: "4px",
       backgroundColor: "#424242",
