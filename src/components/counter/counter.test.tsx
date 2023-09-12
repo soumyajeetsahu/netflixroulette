@@ -22,7 +22,14 @@ test('increments the counter value', () => {
 
 test('decrement the counter value', () => {
   render(<Counter initialValue={5} />);
-  const incrementButton = screen.getByText(/Decrement/);
-  fireEvent.click(incrementButton);
+  const decrementButton = screen.getByText(/Decrement/);
+  fireEvent.click(decrementButton);
   expect(screen.getByText('Value: 4')).toBeInTheDocument();
+});
+
+test('the counter value should not be negative', () => {
+  render(<Counter initialValue={0} />);
+  const decrementButton = screen.getByText(/Decrement/);
+  fireEvent.click(decrementButton);
+  expect(screen.getByText('Value: 0')).toBeInTheDocument();
 });
