@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Counter from './counter';
+import Counter from '../counter/counter';
 
 test('renders the initial value', () => {
   render(<Counter initialValue={5} />);

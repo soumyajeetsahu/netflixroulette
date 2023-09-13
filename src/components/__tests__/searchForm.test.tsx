@@ -1,8 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Counter from './searchForm';
-import SearchForm from './searchForm';
+import SearchForm from '../SearchForm/searchForm';
 import userEvent from '@testing-library/user-event';
 
 test('renders an input with the initial search query passed in props', () => {

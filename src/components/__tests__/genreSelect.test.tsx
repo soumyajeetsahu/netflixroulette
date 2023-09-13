@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import GenreSelect from './genreSelect';
-import { Genres } from './genres';
+import GenreSelect from '../Genre/genreSelect';
+import { Genres } from '../Genre/genres';
 
 
 test('renders all genres passed in props', () => {
