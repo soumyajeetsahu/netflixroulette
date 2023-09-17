@@ -1,0 +1,22 @@
+.sortControl {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sortBy {
+  margin-right: 2em;
+}
+
+.sortByText {
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.8888887763023376px;
+  text-align: left;
+  color: #ffffff;
+  margin-right: 2em;
+}
+

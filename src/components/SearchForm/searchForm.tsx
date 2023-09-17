@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import "./searchForm.scss";
+import styles from './searchForm.module.scss'
 
 interface SearchFormProps {
   initialQuery?: string;
@@ -19,11 +19,11 @@ const SearchForm: React.FC<SearchFormProps> = (props) => {
   };
 
   return (
-    <div className="search-form">
-      <form className="searchForm" onSubmit={handleSubmit}>
-        <div className="search">
-          <input type="text" className="search-input" placeholder="What do you want to watch?" value={searchTerm} onChange={handleChange} />
-          <button className="search-button" type="submit">Search</button>
+    <div className={styles.searchForm}>
+      <form className={styles.searchForm} onSubmit={handleSubmit}>
+        <div className={styles.search}>
+          <input type="text" className={styles.searchInput} placeholder="What do you want to watch?" value={searchTerm} onChange={handleChange} />
+          <button className={styles.searchButton} type="submit">Search</button>
         </div>
       </form>
     </div>

@@ -1,4 +1,4 @@
-.search-input {
+.searchInput {
   width: 46%;
   height: 3.4em;
   padding-left: 1em;
@@ -21,15 +21,15 @@
   cursor: pointer;
 }
 
-.search-form {
+.searchForm {
   margin-top: 2em;
 }
 
-.search-button {
+.searchButton{
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 11em;
+  width: 11em !important;
   height: 2.8em;
   margin-left: 1em;
   flex-shrink: 0;
@@ -43,24 +43,25 @@
   font-weight: 500;
   line-height: normal;
   text-transform: uppercase;
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 1024px) {
-  .search-input {
+  .searchInput {
     width: 80%; 
   }
-  .search-button {
+  .searchButton {
     margin-top: 1em;
   }
 }
 
 @media only screen and (max-width: 768px) {
-  .search-input {
+  .searchInputt {
     width: 80%;
     font-size: 14px;
   }
 
-  .search-button {
+  .searchButton {
     margin-top: 1em;
   }
 }

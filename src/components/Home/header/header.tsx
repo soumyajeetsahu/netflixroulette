@@ -4,7 +4,7 @@ import SearchForm from '../../SearchForm/searchForm';
 
 const Header: React.FC = () => {
   const handleSearch = (query: string) => {
-    console.log('Search value:', query);
+    // console.log('Search value:', query);
   };
 
   return (

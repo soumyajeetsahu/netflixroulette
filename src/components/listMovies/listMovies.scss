@@ -1,5 +1,9 @@
 .listMovies-Container{
     margin-top: 0.5em;
     background: #232323;
-    width: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em 2em;
 }
