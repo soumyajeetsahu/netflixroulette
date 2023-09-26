@@ -12,7 +12,6 @@ const Home: React.FC = () => {
 
   const handleMovietileClick = (id: number) => {
     setShowMoviewDeatils(true);
-    console.log(id);
   }
 
   const handlebackToSeach = () => {

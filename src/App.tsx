@@ -4,12 +4,13 @@ import Counter from './components/counter/counter'
 import Home from "./components/Home/home";
 import { ThemeProvider } from "@mui/material";
 import theme from './styles/styles'
+import AddMovie from "./components/modals/MovieForm/movieForm";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-        <Counter initialValue={0} />
+        {/* <Counter initialValue={0} /> */}
         <Home />
       </div>
     </ThemeProvider>
