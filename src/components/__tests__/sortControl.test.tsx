@@ -8,7 +8,6 @@ import { SortBy } from '../SortControl/sortBy';
 describe('<SortControl />', () => {
     const props: SortControlProps = {
         sortByList: SortBy,
-        defaultValue: 'RELEASE DATE',
         onSortByChange: jest.fn(),
     };
 
@@ -16,7 +15,7 @@ describe('<SortControl />', () => {
         const { getByText } = render(<SortControl {...props} />);
         fireEvent.mouseDown(screen.getByRole('button'));
 
-        const newOption = getByText(props.sortByList[1].value);
+        const newOption = getByText(props.sortByList[1].displayName);
         fireEvent.click(newOption);
 
         expect(props.onSortByChange).toHaveBeenCalledWith(props.sortByList[1].value);

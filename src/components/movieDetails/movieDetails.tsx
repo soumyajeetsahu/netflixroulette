@@ -3,9 +3,10 @@ import { MovieDetail } from './movieDetail'
 import { Typography } from '@mui/material'
 import styles from './movieDetails.module.scss';
 import SearchIcon from '@mui/icons-material/Search';
+import { MoviesData } from '../movieList/movieList';
 
 interface movieDetailsProps {
-    movieDetails: MovieDetail;
+    movieDetails: MoviesData;
     backToSeach: () => void;
 }
 
@@ -19,15 +20,15 @@ const MovieDetails: React.FC<movieDetailsProps> = (props) => {
             </div>
             <div className={styles.movieDetailsContainer}>
                 <div className={styles.movieDetailImage}>
-                    <img src={props.movieDetails.imageUrl} alt={props.movieDetails.movieName} />
+                    <img src={props.movieDetails.poster_path} alt={props.movieDetails.title} />
                 </div>
 
                 <div className={styles.movieDetailsTypography}>
                     <div className={styles.movieName}>
                         <Typography variant='h4'>
-                            {props.movieDetails.movieName}
+                            {props.movieDetails.title}
                         </Typography>
-                        <span className={styles.rating}>{props.movieDetails.rating}</span>
+                        <span className={styles.rating}>{props.movieDetails.vote_average}</span>
                     </div>
 
                     <Typography variant='caption' gutterBottom>
@@ -38,10 +39,10 @@ const MovieDetails: React.FC<movieDetailsProps> = (props) => {
                             </span>))}
                     </Typography>
                     <span className={styles.yearDuration}>
-                        <a className={styles.releaseYear}>{props.movieDetails.releaseYear}</a>
-                        <a className={styles.duration}>{props.movieDetails.duration}</a>
+                        <a className={styles.releaseYear}>{props.movieDetails.release_date.split('-')[0]}</a>
+                        <a className={styles.duration}>{`${Math.floor(props.movieDetails.runtime / 60)}h ${props.movieDetails.runtime % 60}min`}</a>
                     </span>
-                    <Typography variant='body2'> {props.movieDetails.description}</Typography>
+                    <Typography variant='body2'> {props.movieDetails.overview}</Typography>
                 </div>
             </div></>
 

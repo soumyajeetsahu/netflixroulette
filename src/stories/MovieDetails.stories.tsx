@@ -6,42 +6,49 @@ import { within } from '@testing-library/react';
 import { action } from '@storybook/addon-actions';
 
 const meta = {
-    title: 'MovieDetails',
-    component: MovieDetails,
-    tags: ['autodocs'],
-    parameters: {
-        layout: 'fullscreen',
-    },
+  title: 'MovieDetails',
+  component: MovieDetails,
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'fullscreen',
+  },
 } satisfies Meta<typeof MovieDetails>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 const MovieDetailsData = {
-    imageUrl: image_url,
-    movieName: "Pulp Fiction",
-    releaseYear: 1994,
-    rating: 8.9,
-    duration: "2h 34min",
-    description:
-      "Jules Winnfield (Samuel L. Jackson) and Vincent Vega (John Travolta) are two hit men who are out to retrieve a suitcase stolen from their employer, mob boss Marsellus Wallace (Ving Rhames). Wallace has also asked Vincent to take his wife Mia (Uma Thurman) out a few days later when Wallace himself will be out of town. Butch Coolidge (Bruce Willis) is an aging boxer who is paid by Wallace to lose his fight. The lives of these seemingly unrelated people are woven together comprising of a series of funny, bizarre and uncalled-for incidents.—Soumitra",
-    genres: ["Action & Adventure"],
-  };
+  "id": 338970,
+  "title": "Tomb Raider",
+  "tagline": "Her legend begins",
+  "vote_average": 6.2,
+  "vote_count": 817,
+  "release_date": "2018-03-08",
+  "poster_path": "https://image.tmdb.org/t/p/w500/ePyN2nX9t8SOl70eRW47Q29zUFO.jpg",
+  "overview": "Lara Croft, the fiercely independent daughter of a missing adventurer, must push herself beyond her limits when she finds herself on the island where her father disappeared.",
+  "budget": 94000000,
+  "revenue": 126025000,
+  "genres": [
+    "Action",
+    "Adventure"
+  ],
+  "runtime": 118
+};
 
 export const movieDetailsProps: Story = {
-    args: {
-        movieDetails: MovieDetailsData,
-        backToSeach: action('searchIcon clicked')
-    },
+  args: {
+    movieDetails: MovieDetailsData,
+    backToSeach: action('searchIcon clicked')
+  },
 };
 
 export const backToSeach: Story = {
-    ...movieDetailsProps,
-    play: async ({ canvasElement }) => {
-      const canvas = within(canvasElement);
-  
-      const submitButton = canvas.getByTestId('SearchIcon');
-  
-      await userEvent.click(submitButton);
-    },
-  };
+  ...movieDetailsProps,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const submitButton = canvas.getByTestId('SearchIcon');
+
+    await userEvent.click(submitButton);
+  },
+};

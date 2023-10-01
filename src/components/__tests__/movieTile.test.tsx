@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import MovieDetails from '../movieDetails/movieDetails';
+import MovieTile from '../listMovies/MovieTile/movieTile';
+import { MoviesData } from '../movieList/movieList';
 
-describe('MovieDetails', () => {
-
-  const mockBackToSearch = jest.fn();
-  const movieDetailsProps = {
-    movieDetails: {
+describe('MovieTile', () => {
+  const mockOnClick = jest.fn();
+  const movieTileProps = {
+    movieData: {
       "id": 337167,
       "title": "Fifty Shades Freed",
       "tagline": "Don't miss the climax",
@@ -24,23 +24,17 @@ describe('MovieDetails', () => {
       ],
       "runtime": 106
     },
-    backToSeach: mockBackToSearch,
+    onMovieTileClick: mockOnClick,
   };
 
-  test('renders movie details from props', () => {
-
-    render(<MovieDetails {...movieDetailsProps} />);
-
+  test('renders tile and shows movie name', () => {
+    render(<MovieTile {...movieTileProps} />);
     expect(screen.getByText('Fifty Shades Freed')).toBeInTheDocument();
-    expect(screen.getByText('2018')).toBeInTheDocument();
-    expect(screen.getByText('1h 46min')).toBeInTheDocument();
   });
 
-  test('triggers backToSearch when the search icon is clicked', () => {
-
-    render(<MovieDetails {...movieDetailsProps} />);
-    fireEvent.click(screen.getByTestId('SearchIcon'));
-
-    expect(mockBackToSearch).toHaveBeenCalledTimes(1);
+  test('triggers onMovieTileClick when the tile is clicked', () => {
+    render(<MovieTile {...movieTileProps} />);
+    fireEvent.click(screen.getByText('Fifty Shades Freed'));
+    expect(mockOnClick).toHaveBeenCalledWith(337167);
   });
 });

@@ -1,17 +1,16 @@
 import React from "react";
 import "./App.css";
 import Counter from './components/counter/counter'
-import Home from "./components/Home/home";
 import { ThemeProvider } from "@mui/material";
 import theme from './styles/styles'
-import AddMovie from "./components/modals/MovieForm/movieForm";
+import MovieListPage from "./components/movieList/movieListPage";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
         {/* <Counter initialValue={0} /> */}
-        <Home />
+        <MovieListPage/>
       </div>
     </ThemeProvider>
   );

@@ -1,38 +1,31 @@
 import React, { useState } from 'react'
 import './listMovies.scss';
 import GenreSelect from '../Genre/genreSelect';
-import { Genres } from '../Genre/genres';
 import SortControl from '../SortControl/sortControl';
-import { SortBy } from '../SortControl/sortBy';
 import MovieTile from './MovieTile/movieTile';
-import { MovieList } from './movieList';
 import styles from './listMovies.module.scss';
+import { MovieListData, MoviesData } from '../movieList/movieList';
+
+interface listMoviesProps {
+    movieList: MoviesData,
+
+}
 
 const listMovies: React.FC<any> = (props) => {
-
-    const [selectedGenre, setSelectedGenre] = useState('ALL');
-
-    const handleGenreSelect = (genreName: string) => {
-        setSelectedGenre(genreName);
-    };
-
-    const handleSortByChange = (value: string) => {
-        console.log(value)
-    }
 
     return (
         <>
             <div className='listMovies-Container'>
-                <GenreSelect genres={Genres} selectedGenre={selectedGenre} onSelect={handleGenreSelect} />
-                <SortControl onSortByChange={handleSortByChange} sortByList={SortBy} defaultValue={SortBy[0].value} />
+                <GenreSelect genres={props.genres} selectedGenre={props.activeGenre} onSelect={props.handleGenreSelect} />
+                <SortControl onSortByChange={props.handleSortByChange} sortByList={props.SortBy}/>
             </div>
 
             <div className={styles.movieTiles}>
-                {MovieList.map((movie) => (<MovieTile key={movie.id} movieName={movie.movieName} releaseyear={movie.releaseYear} genres={movie.genres} movieId={movie.id}
-                    imageUrl={''} onMovieTileClick={props.onMovieTileClick} />))}
+                {props.MovieList && props.MovieList.length > 0 ? props.MovieList.map((movie: MoviesData) =>
+                (<MovieTile key={movie.id} movieData={movie}
+                    onMovieTileClick={props.onMovieTileClick} />) ): <div style={{color:'#FFF'}}>No Movies Found!!</div>}
             </div>
         </>
-
     )
 }
 

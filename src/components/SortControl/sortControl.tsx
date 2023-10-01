@@ -5,12 +5,12 @@ import { MenuItem, TextField, colors } from '@mui/material';
 
 interface SortBy {
     id: number;
+    displayName: string;
     value: string;
 }
 
 export interface SortControlProps {
     sortByList: SortBy[];
-    defaultValue: string;
     onSortByChange: (value: string) => void;
 }
 
@@ -21,7 +21,7 @@ const sxStyle = {
 }
 
 const SortControl: React.FC<SortControlProps> = (props) => {
-    const [selectedSortBy, setSelectedSortBy] = useState(props.defaultValue);
+    const [selectedSortBy, setSelectedSortBy] = useState<string>("");
 
     const handleChange = (value: string) => {
         setSelectedSortBy(value)
@@ -30,22 +30,24 @@ const SortControl: React.FC<SortControlProps> = (props) => {
 
     return (
         <div className={styles.sortControl}>
-            <span className={`${styles.sortBy} ${styles.sortByText}`}>SORT BY</span>
+            <span className={`${styles.sortByText}`}>SORT BY</span>
             <Select sx={sxStyle}
                 MenuProps={{
                     PaperProps: {
                         sx: {
+                            "& .MuiMenuItem-root.MuiMenuItem-root": { minHeight: 30 },
                             "& .MuiMenuItem-root:hover": { backgroundColor: "#F65261" },
                             "& .MuiMenuItem-root.Mui-selected:hover": { backgroundColor: "#F65261" }
                         }
                     }
                 }}
                 value={selectedSortBy}
-                onChange={(event) => handleChange(event.target.value.toString())} autoWidth={true}
+                onChange={(event) => handleChange(event.target.value)} autoWidth={true}
             >
+                <MenuItem value=""></MenuItem>
                 {props.sortByList.map((sortBy: SortBy) => (
                     <MenuItem value={sortBy.value} key={sortBy.id}>
-                        {sortBy.value}
+                        {sortBy.displayName}
                     </MenuItem>
                 ))}
             </Select>

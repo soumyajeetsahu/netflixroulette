@@ -10,6 +10,29 @@ test('renders an input with the initial search query passed in props', () => {
     expect(input.value).toBe('initial value');
   });
 
+  it('renders the header correctly', () => {
+    render(<SearchForm initialQuery="initial value" onSearch={() => {}} />);
+
+    expect(screen.getByText('netflixroulette')).toBeInTheDocument();
+    expect(screen.getByText('+ add movie')).toBeInTheDocument();
+    expect(screen.getByText('FIND YOUR MOVIE')).toBeInTheDocument();
+  });
+
+  it('calls the onSearch function with the entered search term', () => {
+    const handleSearch = jest.fn();
+    render(<SearchForm initialQuery="Test" onSearch={handleSearch} />);
+
+    fireEvent.change(screen.getByPlaceholderText("What do you want to watch?"), {
+      target: { value: 'New Movie' },
+    });
+
+    fireEvent.click(screen.getByText("Search"));
+
+    expect(handleSearch).toHaveBeenCalledTimes(1);
+
+    expect(handleSearch).toHaveBeenCalledWith('New Movie');
+    expect(handleSearch).toHaveBeenCalledWith('New Movie');
+  });
 
   test('calls the "onSearch" prop with the proper value after typing in the input and clicking the Search button', () => {
     const handleOnSearch = jest.fn();

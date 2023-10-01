@@ -1,10 +1,12 @@
 export const SortBy = [
   {
     id: 1,
-    value: "RELEASE DATE",
+    displayName: "RELEASE DATE",
+    value:"release_date"
   },
   {
     id: 2,
-    value: "TITLE",
+    displayName: "TITLE",
+    value: "title",
   },
 ];
