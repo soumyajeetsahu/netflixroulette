@@ -5,6 +5,11 @@ import '@testing-library/jest-dom';
 import SortControl, { SortControlProps } from '../SortControl/sortControl';
 import { SortBy } from '../SortControl/sortBy';
 
+jest.mock('react-router-dom', () => ({
+    useNavigate: () => jest.fn(),
+    useSearchParams: () => [new URLSearchParams(), jest.fn()],
+  }));
+  
 describe('<SortControl />', () => {
     const props: SortControlProps = {
         sortByList: SortBy,

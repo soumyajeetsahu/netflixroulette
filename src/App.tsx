@@ -4,14 +4,13 @@ import Counter from './components/counter/counter'
 import { ThemeProvider } from "@mui/material";
 import theme from './styles/styles'
 import MovieListPage from "./components/movieList/movieListPage";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <div className="App">
-        {/* <Counter initialValue={0} /> */}
-        <MovieListPage/>
-      </div>
+      <RouterProvider router={router} />
     </ThemeProvider>
   );
 }

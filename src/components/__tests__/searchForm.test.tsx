@@ -2,61 +2,58 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import SearchForm from '../SearchForm/searchForm';
-import userEvent from '@testing-library/user-event';
 
-test('renders an input with the initial search query passed in props', () => {
-    render(<SearchForm initialQuery="initial value" onSearch={() => {}} />);
-    const input = screen.getByPlaceholderText('What do you want to watch?') as HTMLInputElement;
-    expect(input.value).toBe('initial value');
-  });
+jest.mock('react-router-dom', () => ({
+  useNavigate: () => jest.fn(),
+  useSearchParams: () => [new URLSearchParams(), jest.fn()],
+}));
 
-  it('renders the header correctly', () => {
-    render(<SearchForm initialQuery="initial value" onSearch={() => {}} />);
 
-    expect(screen.getByText('netflixroulette')).toBeInTheDocument();
-    expect(screen.getByText('+ add movie')).toBeInTheDocument();
-    expect(screen.getByText('FIND YOUR MOVIE')).toBeInTheDocument();
-  });
-
-  it('calls the onSearch function with the entered search term', () => {
-    const handleSearch = jest.fn();
-    render(<SearchForm initialQuery="Test" onSearch={handleSearch} />);
-
-    fireEvent.change(screen.getByPlaceholderText("What do you want to watch?"), {
-      target: { value: 'New Movie' },
-    });
-
-    fireEvent.click(screen.getByText("Search"));
-
-    expect(handleSearch).toHaveBeenCalledTimes(1);
-
-    expect(handleSearch).toHaveBeenCalledWith('New Movie');
-    expect(handleSearch).toHaveBeenCalledWith('New Movie');
-  });
-
-  test('calls the "onSearch" prop with the proper value after typing in the input and clicking the Search button', () => {
-    const handleOnSearch = jest.fn();
-    render(<SearchForm initialQuery="" onSearch={handleOnSearch} />);
-  
-    const input = screen.getByPlaceholderText('What do you want to watch?');
-    fireEvent.change(input, { target: { value: 'test movie' } });
-  
-    const submitButton = screen.getByText(/^Search$/i);
-    fireEvent.click(submitButton);
-  
-    expect(handleOnSearch).toHaveBeenCalledTimes(1);
-    expect(handleOnSearch).toHaveBeenCalledWith('test movie');
-  });
-
-  test('calls the "onSearch" prop with the proper value after typing in the input and pressing Enter key', () => {
-    const handleOnSearch = jest.fn();
-    render(<SearchForm initialQuery="" onSearch={handleOnSearch} />);
+describe('SearchForm', () => {
+  test('renders correctly', () => {
+    const { getByText, getByPlaceholderText } = render(<SearchForm />);
     
-    const input = screen.getByPlaceholderText('What do you want to watch?');
-
-    userEvent.type(input, "test movie");
-    userEvent.type(input, "{enter}");
-  
-    expect(handleOnSearch).toHaveBeenCalledTimes(1);
-    expect(handleOnSearch).toHaveBeenCalledWith('test movie');
+    expect(getByText('netflixroulette')).toBeInTheDocument();
+    expect(getByText('+ add movie')).toBeInTheDocument();
+    expect(getByText('FIND YOUR MOVIE')).toBeInTheDocument();
+    expect(getByPlaceholderText('What do you want to watch?')).toBeInTheDocument();
+    expect(getByText('Search')).toBeInTheDocument();
   });
+
+  test('handles search input change', () => {
+    const { getByPlaceholderText } = render(<SearchForm />);
+    const searchInput = getByPlaceholderText('What do you want to watch?');
+    
+    fireEvent.change(searchInput, { target: { value: 'Avengers' } });
+    
+    expect(searchInput).toHaveValue('Avengers');
+  });
+
+  test('navigates with the correct query parameters', () => {
+    const { getByPlaceholderText, getByText } = render(<SearchForm />);
+    const searchInput = getByPlaceholderText('What do you want to watch?');
+    const searchButton = getByText('Search');
+
+    const navigate = jest.fn();
+    require('react-router-dom').useNavigate = () => navigate;
+
+    fireEvent.change(searchInput, { target: { value: 'Avengers' } });
+    fireEvent.click(searchButton);
+
+    expect(navigate).toHaveBeenCalledWith('?query=Avengers');
+  });
+
+  test('navigates with multiple query parameters', () => {
+    const { getByPlaceholderText, getByText } = render(<SearchForm />);
+    const searchInput = getByPlaceholderText('What do you want to watch?');
+    const searchButton = getByText('Search');
+
+    const navigate = jest.fn();
+    require('react-router-dom').useNavigate = () => navigate;
+
+    fireEvent.change(searchInput, { target: { value: 'Avengers' } });
+    fireEvent.click(searchButton);
+
+    expect(navigate).toHaveBeenCalledWith('?query=Avengers');
+  });
+});

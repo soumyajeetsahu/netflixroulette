@@ -1,62 +1,69 @@
 import React, { useEffect, useState } from 'react'
-import MovieDetailsComponent from '../movieDetails/movieDetails';
-import SearchForm from '../SearchForm/searchForm';
 import Footer from '../Home/footer';
 import ListMovies from '../listMovies/listMovies';
 import styles from './movieListPage.module.scss'
 import { Genres } from '../Genre/genres';
 import { SortBy } from '../SortControl/sortBy';
 import { MoviesData } from './movieList';
-import { FetchMoviesParams, getAllMoviesList, getMovieById } from '../../services/movieService';
+import { FetchMoviesParams, getAllMoviesList } from '../../services/movieService';
+import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 
 
-const MovieListPage = () => {
-    const [searchQuery, setSearchQuery] = useState<string>("");
-    const [activeGenre, setactiveGenre] = useState<string>('ALL');
+const MovieListPage: React.FC = () => {
+    const [searchParams] = useSearchParams();
+    const query = searchParams.get("query");
+    const sortBy = searchParams.get("sortBy");
+    const genre = searchParams.get("genre");
+    const navigate = useNavigate();
+    const [activeGenre, setactiveGenre] = useState<string>(genre ? genre : 'ALL');
     const [movieList, setMovieList] = useState<MoviesData[]>([]);
-    const [selectedMovie, setselectedMovie] = useState<any>(null);
-    const [sortByFieldName, setSortByFieldName] = useState<string>("");
-
-    const handlebackToSearch = () => {
-        setselectedMovie(null);
-    }
-
-    const handleSearch = (query: string) => {
-        setSearchQuery(query)
-        updateMovieList({
-            sortByField: sortByFieldName,
-            searchQuery: query,
-            genreName: activeGenre === "ALL" ? '' : activeGenre,
-        });
-    };
 
     const handleMovieTileClick = (id: number) => {
-        getMovieById(id)
-            .then((response) => {
-                setselectedMovie(response.data);
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+        const newSearchParams = new URLSearchParams();
+        if (query && query != null) {
+            newSearchParams.set('query', query);
+        }
+        if (sortBy && sortBy != null) {
+            newSearchParams.set('sortBy', sortBy);
+        }
+
+        if (genre && genre != "ALL") {
+            newSearchParams.set('genre', genre);
+        }
+        const queryString = newSearchParams.toString();
+        navigate(`${id}?${queryString}`);
     }
 
     const handleGenreSelect = (genre: string) => {
         setactiveGenre(genre);
-        updateMovieList({
-            sortByField: sortByFieldName,
-            searchQuery,
-            genreName: genre === "ALL" ? '' : genre,
-        });
+        const newSearchParams = new URLSearchParams();
+        if (query && query != null) {
+            newSearchParams.set('query', query);
+        }
+        if (sortBy && sortBy != null) {
+            newSearchParams.set('sortBy', sortBy);
+        }
+
+        if (genre && genre != "ALL") {
+            newSearchParams.set('genre', genre);
+        }
+        const queryString = newSearchParams.toString();
+        navigate(`?${queryString}`);
     };
 
     const handleSortByChange = (value: string) => {
-        setSortByFieldName(value)
-
-        updateMovieList({
-            sortByField: value,
-            searchQuery,
-            genreName: activeGenre === "ALL" ? '' : activeGenre,
-        });
+        const newSearchParams = new URLSearchParams();
+        if (query && query != null) {
+            newSearchParams.set('query', query);
+        }
+        if (value) {
+            newSearchParams.set('sortBy', value);
+        }
+        if (genre) {
+            newSearchParams.set('genre', genre);
+        }
+        const queryString = newSearchParams.toString();
+        navigate(`?${queryString}`);
     }
 
     const updateMovieList = (params: FetchMoviesParams) => {
@@ -73,14 +80,13 @@ const MovieListPage = () => {
     };
 
     useEffect(() => {
-        updateMovieList({});
-    }, [])
+        updateMovieList({ searchQuery: query ? query : "", sortByField: sortBy ? sortBy : "", genreName: genre ? genre : "" });
+    }, [query, sortBy, genre])
 
     return (
         <>
             <div className={styles.homeContainer}>
-                {selectedMovie ? <MovieDetailsComponent movieDetails={selectedMovie} backToSeach={handlebackToSearch} /> :
-                    <SearchForm initialQuery={searchQuery} onSearch={handleSearch} />}
+                <Outlet />
                 <ListMovies onMovieTileClick={handleMovieTileClick} handleSortByChange={handleSortByChange} SortBy={SortBy}
                     genres={Genres} activeGenre={activeGenre} handleGenreSelect={handleGenreSelect} MovieList={movieList} />
                 <Footer />

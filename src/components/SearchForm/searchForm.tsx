@@ -2,11 +2,7 @@ import React, { useState } from 'react';
 import styles from './searchForm.module.scss'
 import MovieForm from '../modals/MovieForm/movieForm';
 import dayjs from 'dayjs';
-
-interface SearchFormProps {
-  initialQuery: string;
-  onSearch: (query: string) => void;
-}
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const initialValues = {
   title: 'Test Movie Name',
@@ -18,14 +14,35 @@ const initialValues = {
   overview: 'Some description',
 };
 
-const SearchForm: React.FC<SearchFormProps> = (props) => {
-  const [searchTerm, setSearchTerm] = useState<string>(props.initialQuery);
+const SearchForm: React.FC<{}> = () => {
+
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get("query");
+  const sortBy = searchParams.get("sortBy");
+  const genre = searchParams.get("genre");
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState<string>(searchQuery ? searchQuery : "");
   const [addMovieVisible, setAddMovieVisible] = useState(false);
+
 
   const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    props.onSearch(searchTerm);
-    setSearchTerm("");
+
+    const newSearchParams = new URLSearchParams();
+    if (searchTerm && searchTerm != null) {
+      newSearchParams.set('query', searchTerm);
+    }
+
+    if (sortBy && sortBy != null) {
+      newSearchParams.set('sortBy', sortBy);
+    }
+
+    if (genre && genre != "ALL") {
+      newSearchParams.set('genre', genre);
+    }
+
+    const queryString = newSearchParams.toString();
+    navigate(`?${queryString}`);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styles from './sortControl.module.scss';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { MenuItem, TextField, colors } from '@mui/material';
+import { useSearchParams } from 'react-router-dom';
 
 interface SortBy {
     id: number;
@@ -21,7 +22,9 @@ const sxStyle = {
 }
 
 const SortControl: React.FC<SortControlProps> = (props) => {
-    const [selectedSortBy, setSelectedSortBy] = useState<string>("");
+    const [searchParams] = useSearchParams();
+    const sortBy = searchParams.get("sortBy");
+    const [selectedSortBy, setSelectedSortBy] = useState<string>(sortBy ? sortBy : "");
 
     const handleChange = (value: string) => {
         setSelectedSortBy(value)
