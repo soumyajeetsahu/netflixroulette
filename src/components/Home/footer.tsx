@@ -1,9 +1,17 @@
-import React from 'react'
+import React from 'react';
 
 const footer = () => {
-  return (
-    <div>netflixroulette</div>
-  )
-}
+  const footerStyle: React.CSSProperties = {
+    textAlign: 'center',
+    marginTop: '1em',
+    color: '#F65261',
+    fontFamily: 'Montserrat',
+    fontSize: 20,
+  };
 
-export default footer
+  return (
+    <div style={footerStyle}>netflixroulette</div>
+  );
+};
+
+export default footer;

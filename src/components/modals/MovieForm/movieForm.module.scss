@@ -1,0 +1,62 @@
+.formField {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.formRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1em;
+  color: white;
+  span:last-child {
+    margin-left: 1em;
+  }
+}
+
+.formRow label,
+.description label {
+  margin-bottom: 0.5em;
+  color: #f65261;
+}
+
+.addMovieContainer {
+  width: 976px;
+  height: 917px;
+}
+
+.description {
+  width: 100%;
+}
+
+.formButton {
+  text-align: right;
+  margin-top: 1em;
+
+  button {
+    margin-left: 0.5em;
+  }
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #232323;
+  position: relative;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+}
