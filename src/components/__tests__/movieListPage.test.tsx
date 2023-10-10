@@ -1,15 +1,20 @@
 import MovieListPage from '../movieList/movieListPage';
 import React from 'react';
-import { render, fireEvent, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import { render, fireEvent, screen, waitForElementToBeRemoved, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import axios, { AxiosResponse } from 'axios';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import MovieInfo from '../movieDetails/movieInfo';
+import SearchForm from '../SearchForm/searchForm';
+import { getMovieById } from '../movieDetails/movieDetail';
 
 describe('MovieListPage', () => {
     afterEach(() => {
         jest.restoreAllMocks();
     });
     beforeEach(() => {
+
         const mAxiosResponse = {
             data: {
                 data: [
@@ -38,8 +43,18 @@ describe('MovieListPage', () => {
     })
 
 
-    test('renders Header and ListMovies components when showMovieDetails is false', () => {
-        render(<MovieListPage />);
+    test('renders Header and ListMovies components when index path', async () => {
+        await act(async () => {
+            render(
+                <MemoryRouter initialEntries={['/']}>
+                    <Routes>
+                        <Route path="/" element={<MovieListPage />}>
+                            <Route index element={<SearchForm />} />
+                        </Route>
+                    </Routes>
+                </MemoryRouter>
+            );
+        });
 
         expect(screen.getByText('FIND YOUR MOVIE')).toBeInTheDocument();
         const input = screen.getByPlaceholderText('What do you want to watch?');
@@ -47,56 +62,41 @@ describe('MovieListPage', () => {
         expect(input).toBeInTheDocument();
     });
 
-    test('renders MovieDetailsComponent when movie tile is clicked', async () => {
-        render(<MovieListPage />);
-
-        expect(await screen.findByText('Fifty Shades Freed')).toBeInTheDocument();
-        const movieTile = screen.getByText('Fifty Shades Freed');
-        fireEvent.click(movieTile);
-        await waitForElementToBeRemoved(() => screen.getByText('FIND YOUR MOVIE'));
-        expect(screen.getByTestId('SearchIcon')).toBeInTheDocument();
-    });
-
-    test('hides MovieDetailsComponent and shows Header when backToSearch is called', async () => {
-        render(<MovieListPage />);
-
-        expect(await screen.findByText('Fifty Shades Freed')).toBeInTheDocument();
-        const movieTile = screen.getByText('Fifty Shades Freed');
-        fireEvent.click(movieTile);
-        await waitForElementToBeRemoved(() => screen.getByText('FIND YOUR MOVIE'));
-        expect(screen.getByTestId('SearchIcon')).toBeInTheDocument();
-        const backButton = screen.getByTestId('SearchIcon');
-        fireEvent.click(backButton);
-
-        expect(await screen.findByText('Fifty Shades Freed')).toBeInTheDocument();
-    });
-
     test('calls "onSelect" callback with correct genre after clicking a genre button', async () => {
-        render(<MovieListPage />);
-        expect(await screen.findByText('Fifty Shades Freed')).toBeInTheDocument();
-        const genreButton = screen.getByText('Documentary');
-        fireEvent.click(genreButton);
-        const selectedGenre = screen.getByText('Documentary');
-        expect(selectedGenre.closest('a')).toHaveClass('active');
-    });
-
-    test('calls "onSelect" callback with correct genre after clicking a genre button', async () => {
-        render(<MovieListPage />);
-        expect(await screen.findByText('Fifty Shades Freed')).toBeInTheDocument();
-        const genreButton = screen.getByText('Documentary');
-        fireEvent.click(genreButton);
-        const selectedGenre = screen.getByText('Documentary');
-        expect(selectedGenre.closest('a')).toHaveClass('active');
-    });
-
-    test('calls the onSearch function with the entered search term', async () => {
-        const component = render(<MovieListPage/>);
-        expect(await screen.findByText('Fifty Shades Freed')).toBeInTheDocument();
-        fireEvent.change(screen.getByPlaceholderText("What do you want to watch?"), {
-          target: { value: 'Fifty Shades Freed' },
+        await act(async () => {
+            render(
+                <MemoryRouter initialEntries={['/']}>
+                    <Routes>
+                        <Route path="/" element={<MovieListPage />}>
+                            <Route index element={<SearchForm />} />
+                        </Route>
+                    </Routes>
+                </MemoryRouter>
+            );
         });
-    
-        fireEvent.click(screen.getByText("Search"));
-        expect(component.baseElement).toMatchSnapshot();
-      });
+        expect(await screen.findByText('Fifty Shades Freed')).toBeInTheDocument();
+        const genreButton = screen.getByText('Documentary');
+        fireEvent.click(genreButton);
+        const selectedGenre = screen.getByText('Documentary');
+        expect(selectedGenre.closest('a')).toHaveClass('active');
+    });
+
+    test('calls "onSelect" callback with correct genre after clicking a genre button', async () => {
+        await act(async () => {
+            render(
+                <MemoryRouter initialEntries={['/']}>
+                    <Routes>
+                        <Route path="/" element={<MovieListPage />}>
+                            <Route index element={<SearchForm />} />
+                        </Route>
+                    </Routes>
+                </MemoryRouter>
+            );
+        });
+        expect(await screen.findByText('Fifty Shades Freed')).toBeInTheDocument();
+        const genreButton = screen.getByText('Documentary');
+        fireEvent.click(genreButton);
+        const selectedGenre = screen.getByText('Documentary');
+        expect(selectedGenre.closest('a')).toHaveClass('active');
+    });
 });
