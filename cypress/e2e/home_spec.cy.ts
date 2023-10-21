@@ -48,4 +48,25 @@ describe("App Component", () => {
     cy.get("div").should("contain", "Zootopia");
     cy.get('a').should('contain', 'Comedy').should('have.class','active');
   });
+
+  it('shows edit and delete options when IconButton is clicked', () => {
+    cy.get('button[aria-label="settings"]').first().click();
+    cy.contains('Edit').should('be.visible');
+    cy.contains('Delete').should('be.visible');
+  });
+
+  it('navigates to edit page when edit option is clicked', () => {
+    cy.get('button[aria-label="settings"]').first().click();
+    cy.contains('Edit').click();
+    cy.url().should('include', '/edit');
+    cy.contains("EDIT MOVIE");
+  });
+
+  it('navigates to Add Movie', () => {
+    cy.visit("/");
+    cy.contains('+ add movie').click();
+    cy.url().should('include', '/new');
+    cy.contains("ADD MOVIE");
+  });
+
 });

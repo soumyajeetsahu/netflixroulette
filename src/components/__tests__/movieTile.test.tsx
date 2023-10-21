@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import MovieTile from '../listMovies/MovieTile/movieTile';
-import { MoviesData } from '../movieList/movieList';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('MovieTile', () => {
   const mockOnClick = jest.fn();
@@ -27,13 +27,17 @@ describe('MovieTile', () => {
     onMovieTileClick: mockOnClick,
   };
 
+  const renderWithRouter = (component: any) => {
+    return render(<MemoryRouter>{component}</MemoryRouter>);
+  };
+
   test('renders tile and shows movie name', () => {
-    render(<MovieTile {...movieTileProps} />);
+    renderWithRouter(<MovieTile {...movieTileProps} />);
     expect(screen.getByText('Fifty Shades Freed')).toBeInTheDocument();
   });
 
   test('triggers onMovieTileClick when the tile is clicked', () => {
-    render(<MovieTile {...movieTileProps} />);
+    renderWithRouter(<MovieTile {...movieTileProps} />);
     fireEvent.click(screen.getByText('Fifty Shades Freed'));
     expect(mockOnClick).toHaveBeenCalledWith(337167);
   });

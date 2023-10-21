@@ -7,11 +7,16 @@ import MovieInfo from "./components/movieDetails/movieInfo";
 import { getMovieById } from "./components/movieDetails/movieDetail";
 import Counter from "./components/counter/counter";
 import MovieListPage from "./components/movieList/movieListPage";
+import MovieForm from "./components/modals/MovieForm/movieForm";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<MovieListPage />} errorElement={<ErrorPage />}>
-      <Route index element={<SearchForm />} />
+      <Route element={<SearchForm />}>
+        <Route index />
+        <Route path="new" element={<MovieForm />} />
+        <Route path=":movieId/edit" element={<MovieForm />} loader={getMovieById}/>
+      </Route>
       <Route
         path=":movieId"
         element={<MovieInfo />}

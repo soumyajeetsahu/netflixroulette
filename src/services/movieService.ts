@@ -1,4 +1,5 @@
 import axios from "axios";
+import { MoviesData } from "../components/movieList/movieList";
 
 const baseURL = "http://localhost:4000";
 
@@ -22,4 +23,15 @@ export const getAllMoviesList = (params: FetchMoviesParams) => {
 export const getMovieById = (movieId: number) => {
   const url = `${baseURL}/movies/${movieId}`;
   return axios.get(url);
+};
+
+
+export const addMovie = (movie: MoviesData) => {
+  const url = `${baseURL}/movies`;
+  return axios.post(url,movie);
+};
+
+export const editMovie = (movie: MoviesData) => {
+  const url = `${baseURL}/movies`;
+  return axios.put(url,movie);
 };

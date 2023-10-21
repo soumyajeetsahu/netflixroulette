@@ -1,42 +1,60 @@
-import React from 'react';
-import { render, fireEvent, screen, within } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import MovieForm from '../modals/MovieForm/movieForm';
-import dayjs from 'dayjs';
-import ReactDOM from 'react-dom';
-import userEvent from '@testing-library/user-event';
+import React from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import { MemoryRouter } from "react-router-dom";
+import MovieForm from "../modals/MovieForm/movieForm";
 
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useLoaderData: () => null, 
+}));
 
-describe('MovieForm', () => {
+const renderWithPortal = (component: string | number | boolean | React.JSX.Element | Iterable<React.ReactNode> | null | undefined) => {
+  const portalRoot = document.createElement("div");
+  portalRoot.setAttribute("id", "portal-root");
+  document.body.appendChild(portalRoot);
 
-  test('add movie form to be empty and handles the submit event', () => {
-    const handleSubmit = jest.fn();
+  return render(<MemoryRouter initialEntries={["/new"]}>{component}</MemoryRouter>);
+};
 
-    render(<div id="portal-root"><MovieForm onSubmit={handleSubmit} onClose={() => { }} /></div>);
-
-    const titleInputParent = screen.getByTestId('titleInput');
-    const inputTitle = within(titleInputParent).getByRole('textbox') as HTMLInputElement;
-    expect(inputTitle.value).toBe('');
-
-    const submitButton = screen.getByText(/^SUBMIT$/i);
-    fireEvent.click(submitButton);
-    expect(handleSubmit).toHaveBeenCalled();
+describe("MovieForm", () => {
+  beforeEach(() => {
+    renderWithPortal(<MovieForm />);
   });
 
-  test('initialData updates form values', () => {
-    const initialData = {
-      title: 'Test Movie Name',
-      releaseDate: dayjs('1994-02-28'),
-      movieUrl: 'https://demomovie.com',
-      rating: 9.2,
-      genre: ['ACTION'],
-      runtime: '2h 43min',
-      overview: 'Some description',
-    };
+  test("renders the MovieForm component", () => {
+    expect(screen.getByText(/Add Movie/i)).toBeInTheDocument();
+  });
 
-    render(<MovieForm initialData={initialData} onSubmit={() => {}} onClose={() => {}} />);
-    const titleInputParent = screen.getByTestId('titleInput');
-    const inputTitle = within(titleInputParent).getByRole('textbox') as HTMLInputElement;
-    expect(inputTitle.value).toBe('Test Movie Name');
+  test("renders form submission button", () => {
+    expect(screen.getByText(/Submit/i)).toBeInTheDocument();
+  });
+
+  test("renders form reset button and clears form when clicked", () => {
+    const resetButton = screen.getByText(/Reset/i);
+    expect(resetButton).toBeInTheDocument();
+    fireEvent.change(screen.getByPlaceholderText("Movie Name"), { target: { value: "Test Movie" } });
+    expect(screen.getByPlaceholderText("Movie Name")).toHaveValue("Test Movie");
+    fireEvent.click(resetButton);
+    expect(screen.getByPlaceholderText("Movie Name")).toHaveValue("");
+  });
+  
+  test("displays 'ADD MOVIE' instead of 'EDIT MOVIE'", () => {
+    expect(screen.getByText(/Add Movie/i)).toBeInTheDocument();
+    expect(screen.queryByText("Edit Movie")).toBeNull();
+  });
+
+  test("displays form validation errors for mandatory fields", async () => {
+    
+    const submitButton = screen.getByRole("button", { name: /submit/i });
+    fireEvent.submit(submitButton);
+
+    await screen.findAllByText("Title is required");
+    await screen.findAllByText("Release date is required");
+    await screen.findAllByText("Movie URL is required");
+    await screen.findAllByText("Rating is required");
+    await screen.findAllByText("Select At least one Genre.");
+    await screen.findAllByText("Runtime is required");
+    await screen.findAllByText("Overview is required");
   });
 });

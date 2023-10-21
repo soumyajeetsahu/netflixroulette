@@ -1,0 +1,15 @@
+.editDeleteFormDialog{
+    margin-top: 2%;
+    color: #FFF;
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    span{
+        margin-top: 5%;
+        padding: 5px;
+        padding-left: 10%;
+    }
+    span:hover,:focus{
+        background-color: #F65261;
+    }
+}

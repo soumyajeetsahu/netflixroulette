@@ -19,4 +19,8 @@ export const Genres = [
     id: 5,
     name: "Crime",
   },
+  {
+    id: 6,
+    name: "Action",
+  },
 ];

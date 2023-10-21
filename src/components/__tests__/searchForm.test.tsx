@@ -2,16 +2,20 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import SearchForm from '../SearchForm/searchForm';
+import { MemoryRouter } from 'react-router-dom';
 
 jest.mock('react-router-dom', () => ({
-  useNavigate: () => jest.fn(),
-  useSearchParams: () => [new URLSearchParams(), jest.fn()],
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: jest.fn(),
 }));
 
-
 describe('SearchForm', () => {
+  const renderWithRouter = (component: any) => {
+    return render(<MemoryRouter>{component}</MemoryRouter>);
+  };
+  
   test('renders correctly', () => {
-    const { getByText, getByPlaceholderText } = render(<SearchForm />);
+    const { getByText, getByPlaceholderText } = renderWithRouter(<SearchForm />);
     
     expect(getByText('netflixroulette')).toBeInTheDocument();
     expect(getByText('+ add movie')).toBeInTheDocument();
@@ -21,7 +25,7 @@ describe('SearchForm', () => {
   });
 
   test('handles search input change', () => {
-    const { getByPlaceholderText } = render(<SearchForm />);
+    const { getByPlaceholderText } = renderWithRouter(<SearchForm />);
     const searchInput = getByPlaceholderText('What do you want to watch?');
     
     fireEvent.change(searchInput, { target: { value: 'Avengers' } });
@@ -30,7 +34,7 @@ describe('SearchForm', () => {
   });
 
   test('navigates with the correct query parameters', () => {
-    const { getByPlaceholderText, getByText } = render(<SearchForm />);
+    const { getByPlaceholderText, getByText } = renderWithRouter(<SearchForm />);
     const searchInput = getByPlaceholderText('What do you want to watch?');
     const searchButton = getByText('Search');
 
@@ -44,7 +48,7 @@ describe('SearchForm', () => {
   });
 
   test('navigates with multiple query parameters', () => {
-    const { getByPlaceholderText, getByText } = render(<SearchForm />);
+    const { getByPlaceholderText, getByText } = renderWithRouter(<SearchForm />);
     const searchInput = getByPlaceholderText('What do you want to watch?');
     const searchButton = getByText('Search');
 

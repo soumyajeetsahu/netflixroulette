@@ -30,8 +30,6 @@ type Story = StoryObj<typeof meta>;
 
 export const initialValue: Story = {
   args: {
-    onSubmit: action('Submit clicked'),
-    onClose: action('')
   },
 };
 

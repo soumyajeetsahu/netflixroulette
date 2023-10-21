@@ -2,17 +2,26 @@ import React, { useState } from 'react';
 import styles from './searchForm.module.scss'
 import MovieForm from '../modals/MovieForm/movieForm';
 import dayjs from 'dayjs';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 
 const initialValues = {
-  title: 'Test Movie Name',
-  releaseDate: dayjs('1994-02-28'),
-  movieUrl: 'https://demomovie.com',
-  rating: 9.2,
-  genre: ['ACTION'],
-  runtime: '2h 43min',
-  overview: 'Some description',
-};
+  "title": "La La Land",
+  "tagline": "Here's to the fools who dream.",
+  "vote_average": 7.9,
+  "vote_count": 6782,
+  "release_date": "2016-12-29",
+  "poster_path": "https://image.tmdb.org/t/p/w500/ylXCdC106IKiarftHkcacasaAcb.jpg",
+  "overview": "Mia, an aspiring actress, serves lattes to movie stars in between auditions and Sebastian, a jazz musician, scrapes by playing cocktail party gigs in dingy bars, but as success mounts they are faced with decisions that begin to fray the fragile fabric of their love affair, and the dreams they worked so hard to maintain in each other threaten to rip them apart.",
+  "budget": 30000000,
+  "revenue": 445435700,
+  "runtime": 128,
+  "genres": [
+    "Comedy",
+    "Drama",
+    "Romance"
+  ],
+  "id": 313369
+}
 
 const SearchForm: React.FC<{}> = () => {
 
@@ -22,8 +31,6 @@ const SearchForm: React.FC<{}> = () => {
   const genre = searchParams.get("genre");
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState<string>(searchQuery ? searchQuery : "");
-  const [addMovieVisible, setAddMovieVisible] = useState(false);
-
 
   const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -50,21 +57,31 @@ const SearchForm: React.FC<{}> = () => {
   };
 
   const openAddMovie = () => {
-    setAddMovieVisible(true);
+    const newSearchParams = new URLSearchParams();
+    if (searchTerm && searchTerm != null) {
+      newSearchParams.set('query', searchTerm);
+    }
+
+    if (sortBy && sortBy != null) {
+      newSearchParams.set('sortBy', sortBy);
+    }
+
+    if (genre && genre != "ALL") {
+      newSearchParams.set('genre', genre);
+    }
+
+    const queryString = newSearchParams.toString();
+    navigate(`/new?${queryString}`);
   };
 
-  const closeAddMovie = () => {
-    setAddMovieVisible(false);
-  };
-
-  const handleSubmit = (data: any) => {
-    console.log('Submitted data:', data);
-    closeAddMovie();
+  const navigateAndRefreshHome = () => {
+    navigate("/");
+    window.location.reload();
   };
 
   return (
     <div className={styles.headerDiv}>
-      <div className={styles.pageTitle}>netflixroulette</div>
+      <div className={styles.pageTitle} onClick={navigateAndRefreshHome}>netflixroulette</div>
       <div className={styles.addButtonDiv}>
         <button className={styles.addButton} onClick={openAddMovie} >+ add movie</button>
       </div>
@@ -79,7 +96,7 @@ const SearchForm: React.FC<{}> = () => {
           </div>
         </form>
       </div>
-      {addMovieVisible && <MovieForm onSubmit={handleSubmit} initialData={initialValues} onClose={closeAddMovie} />}
+      <Outlet />
     </div>
   );
 };
